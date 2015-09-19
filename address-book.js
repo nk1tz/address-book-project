@@ -270,8 +270,9 @@ function searchForContact(){
              return obj.last_name.toLowerCase() === name.search_term.toLowerCase();
         });
         
+        //This code isn't working apparently :::>>>
         searchResults3 = addressBook.filter(function ( obj ) {
-             return obj.email.substring( 0, ( obj.email.indexOf( '@' )-1)  ).toLowerCase() === name.search_term.toLowerCase();
+             return obj.email.substring( 0,  obj.email.indexOf( '@' ) ).toLowerCase() === name.search_term.toLowerCase();
         });
         
         if(searchResults1){
@@ -280,7 +281,7 @@ function searchForContact(){
                 searchResults = searchResults.concat(searchResults2);
             }
             if(searchResults3){
-                searchResults1 = searchResults.concat(searchResults3);
+                searchResults = searchResults.concat(searchResults3);
             }
         }
         else if(searchResults2){
@@ -293,11 +294,28 @@ function searchForContact(){
             searchResults = searchResults3;
         }
         
-        
         console.log( JSON.stringify(searchResults) );
         
-        mainMenu();
+        viewSearchResults(searchResults);
         
 
+    });
+}
+
+function viewSearchResults(searchResults){
+    inquirer.promptAsync([
+        {
+            type: "list",
+            name: "search_results",
+            message: "\nHere is what your search has turned up:\n",
+            choices: [
+                "result 1",
+                "result 2",
+                "result 3"
+        ]
+        }
+    ], function( selection ) {
+        console.log( "You selected : "+selection.search_results );
+        
     });
 }
