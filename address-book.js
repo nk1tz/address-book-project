@@ -20,34 +20,33 @@ var Table = require('cli-table');
 //
 var addressBook = [
     
-    { first_name: 'Dude',
-  last_name: 'Man',
-  birthday: '44hug',
-  address: '234',
-  phone: '9876543214',
-  email: 'sexy@gmail.com' }
-  ,
-  { first_name: 'Kayla',
-  last_name: 'Hennig',
-  birthday: 'something',
-  address: 'beside me',
-  phone: '4567891456',
-  email: 'nathaniel@gmail.com' }
-  ,
   { first_name: 'Nathaniel',
   last_name: 'Kitzke',
-  birthday: 'something',
-  address: 'right here',
-  phone: '4567891456',
-  email: 'You' }
+  birthday: '44hug',
+  address_home: '234',
+  address_work: '',
+  address_other: '',
+  phone_home: '9876543214',
+  phone_work: '',
+  phone_other: '',
+  email_home: 'sexy@gmail.com',
+  email_work: '',
+  email_other: '' 
+  }
   ,
-  { first_name: 'Nathaniel',
-  last_name: 'hamilton',
-  birthday: 'something',
-  address: 'beside me',
-  phone: '4567891456',
-  email: 'george@gmail.com' }
-    
+  { first_name: 'Ulaize',
+  last_name: 'Pistachio',
+  birthday: 'GGG',
+  address_home: '894654',
+  address_work: '',
+  address_other: '',
+  phone_home: '9876543214',
+  phone_work: '',
+  phone_other: '',
+  email_home: 'apachupa@gmail.com',
+  email_work: '',
+  email_other: ''  }
+  
 ];
 
 mainMenu();
@@ -97,7 +96,7 @@ function createNewEntry(){
         {
             type: "input",
             name: "first_name",
-            message: "First name :"
+            message: "First name :",
         },
         {
             type: "input",
@@ -111,13 +110,23 @@ function createNewEntry(){
         },
         {
             type: "input",
-            name: "address",
-            message: "Address :",
+            name: "address_home",
+            message: "Address (home):",
         },
         {
             type: "input",
-            name: "phone",
-            message: "Phone number :",
+            name: "address_work",
+            message: "Address (work):",
+        },
+        {
+            type: "input",
+            name: "address_other",
+            message: "Address (other):",
+        },
+        {
+            type: "input",
+            name: "phone_home",
+            message: "Phone number (home):",
             validate: function( value ) {
                 var pass = value.match(/^([01]{1})?[\-\.\s]?\(?(\d{3})\)?[\-\.\s]?(\d{3})[\-\.\s]?(\d{4})\s?((?:#|ext\.?\s?|x\.?\s?){1}(?:\d+)?)?$/i);
                 if (pass) {
@@ -125,12 +134,32 @@ function createNewEntry(){
                 } else {
                     return "Please enter a valid phone number";
                 }
-            }
+            },
+        },
+        {
+            type: "input",
+            name: "phone_work",
+            message: "Phone number (work):",
         }, 
         {
             type: "input",
-            name: "email",
-            message: "Email :",
+            name: "phone_other",
+            message: "Phone number (other):",
+        }, 
+        {
+            type: "input",
+            name: "email_home",
+            message: "Email (home):",
+        },
+         {
+            type: "input",
+            name: "email_work",
+            message: "Email (work):",
+        },
+         {
+            type: "input",
+            name: "email_other",
+            message: "Email (other):",
         },
     ];
     
@@ -153,9 +182,9 @@ function viewContact(index){
         ["First Name", addressBook[index].first_name],
         ["Last Name", addressBook[index].last_name],
         ["Birthday", addressBook[index].birthday],
-        ["Adresses", addressBook[index].address],
-        ["Phones", addressBook[index].phone],
-        ["Emails", addressBook[index].email]
+        ["Adresses", "Home: " + addressBook[index].address_home +"\nWork: "+ addressBook[index].address_work +"\nOther: "+ addressBook[index].address_other],
+        ["Phones", "Home: " + addressBook[index].phone_home +"\nWork: " + addressBook[index].phone_work +"\nOther: " + addressBook[index].phone_other],
+        ["Emails", "Home: " + addressBook[index].email_home +"\nWork: " + addressBook[index].email_work +"\nOther: " + addressBook[index].email_other]
     );
     console.log(table.toString());
     inquirer.promptAsync([
@@ -210,14 +239,26 @@ function editContact(index){
         },
         {
             type: "input",
-            name: "address",
-            message: "Address :",
-            default: function () { return addressBook[index].address; }
+            name: "address_home",
+            message: "Address (home):",
+            default: function () { return addressBook[index].address_home; }
         },
         {
             type: "input",
-            name: "phone",
-            message: "Phone number :",
+            name: "address_work",
+            message: "Address (work):",
+            default: function () { return addressBook[index].address_work; }
+        },
+        {
+            type: "input",
+            name: "address_other",
+            message: "Address (other):",
+            default: function () { return addressBook[index].address_other; }
+        },
+        {
+            type: "input",
+            name: "phone_home",
+            message: "Phone number (home):",
             validate: function( value ) {
                 var pass = value.match(/^([01]{1})?[\-\.\s]?\(?(\d{3})\)?[\-\.\s]?(\d{3})[\-\.\s]?(\d{4})\s?((?:#|ext\.?\s?|x\.?\s?){1}(?:\d+)?)?$/i);
                 if (pass) {
@@ -226,26 +267,65 @@ function editContact(index){
                     return "Please enter a valid phone number";
                 }
             },
-            default: function () { return addressBook[index].phone; }
+            default: function () { return addressBook[index].phone_home; }
+        },
+        {
+            type: "input",
+            name: "phone_work",
+            message: "Phone number (work):",
+            default: function () { return addressBook[index].phone_work; }
         }, 
         {
             type: "input",
-            name: "email",
-            message: "Email :",
-            default: function () { return addressBook[index].email; }
+            name: "phone_other",
+            message: "Phone number (other):",
+            default: function () { return addressBook[index].phone_other; }
+        }, 
+        {
+            type: "input",
+            name: "email_home",
+            message: "Email (home):",
+            default: function () { return addressBook[index].email_home; }
+        },
+         {
+            type: "input",
+            name: "email_work",
+            message: "Email (work):",
+            default: function () { return addressBook[index].email_work; }
+        },
+         {
+            type: "input",
+            name: "email_other",
+            message: "Email (other):",
+            default: function () { return addressBook[index].email_other; }
         },
     ];
     inquirer.promptAsync( questionsForEntry, function( entry ) {
         addressBook[index] = entry;
-        console.log(entry);
-        console.log(addressBook.indexOf(entry));
+
         viewContact(addressBook.indexOf(entry));
     });
 }
 
 function deleteEntry(index){
-    addressBook.splice(index, 1);
-    mainMenu();
+    inquirer.promptAsync([
+        {
+            type: "list",
+            name: "deleteIt",
+            message: "\nAre you sure you want to delete this entry?\n",
+            choices: ["Yes" , "No"]
+        }
+    ], function( selection ) {
+        console.log( "You selected : " + selection.deleteIt );
+        if(selection.deleteIt === "Yes"){
+            addressBook.splice(index, 1);
+            mainMenu();
+        }  
+        else{
+            viewContact( index );
+        }
+    });
+    
 }
 
 function searchForContact(){
@@ -256,66 +336,37 @@ function searchForContact(){
             message: "Please enter a single name to search for :"
         }
     ];
-    
     inquirer.promptAsync( contactToSearch, function( name ) {
-        var searchResults1 = [];
-        var searchResults2 = [];
-        var searchResults3 = [];
-        var searchResults = [];       
-        searchResults1 = addressBook.filter(function ( obj ) {
-            return obj.first_name.toLowerCase() === name.search_term.toLowerCase();
-        });
-        
-        searchResults2 = addressBook.filter(function ( obj ) {
-             return obj.last_name.toLowerCase() === name.search_term.toLowerCase();
-        });
-        
-        //This code isn't working apparently :::>>>
-        searchResults3 = addressBook.filter(function ( obj ) {
-             return obj.email.substring( 0,  obj.email.indexOf( '@' ) ).toLowerCase() === name.search_term.toLowerCase();
-        });
-        
-        if(searchResults1){
-            searchResults = searchResults1;
-            if(searchResults2){
-                searchResults = searchResults.concat(searchResults2);
+        var searchResults = [];   
+        addressBook.forEach(function ( obj ) {
+            if( obj.first_name.toLowerCase() === name.search_term.toLowerCase() ){
+                searchResults.push( addressBook.indexOf(obj) );
             }
-            if(searchResults3){
-                searchResults = searchResults.concat(searchResults3);
+            else if( obj.last_name.toLowerCase() === name.search_term.toLowerCase() ){
+                searchResults.push( addressBook.indexOf(obj) );
             }
-        }
-        else if(searchResults2){
-            searchResults = searchResults2;
-            if(searchResults3){
-                searchResults = searchResults.concat(searchResults3);
-            }
-        }
-        else if(searchResults3){
-            searchResults = searchResults3;
-        }
-        
-        console.log( JSON.stringify(searchResults) );
-        
-        viewSearchResults(searchResults);
-        
-
+             else if( obj.email_home.substring( 0,  obj.email_home.indexOf( '@' ) ).toLowerCase() === name.search_term.toLowerCase() ){
+                searchResults.push( addressBook.indexOf(obj) );
+             }
+        });
+        viewSearchResults( searchResults );
     });
 }
 
 function viewSearchResults(searchResults){
+    var searchResultsPresented = [];
+    searchResults.forEach(function(ele) {
+        searchResultsPresented.push( addressBook[ele].first_name + " , " + addressBook[ele].last_name );
+    });
     inquirer.promptAsync([
         {
             type: "list",
             name: "search_results",
             message: "\nHere is what your search has turned up:\n",
-            choices: [
-                "result 1",
-                "result 2",
-                "result 3"
-        ]
+            choices: searchResultsPresented
         }
     ], function( selection ) {
-        console.log( "You selected : "+selection.search_results );
-        
+        console.log( "You selected : " + selection.search_results );
+        viewContact( searchResults[ searchResultsPresented.indexOf(selection.search_results) ] );
     });
 }
